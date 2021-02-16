@@ -19,7 +19,6 @@ This library is published in Github Packages.
 
 > npm install @rynangeles/ngb-intelisearch
 
-This will also install peer dependencies automatically.
 
 ###  Import the module
     import { NgbIntelisearchModule } from  'ngb-intelisearch';
@@ -92,7 +91,7 @@ This will also install peer dependencies automatically.
 
 ## API
 ### Inputs 
-| <!-- -->  | <!-- -->  | <!-- -->  |
+|  |  |  |
 |--|--|--|
 | **name** | required | Name of the instance. *type: String* |
 | **keys** | required | List of properties of the collection to search. *type: Observable<{value:any, label:string}[]* |
