@@ -7,7 +7,7 @@ Angular library for inteligent search input with save recent search feature.
 
 ## Demo
 
-Check the demo site on how it works [https://rynangeles.github.io/ngb-intelisearch/]([https://rynangeles.github.io/ngb-intelisearch/])
+Check the demo site on how it works [https://rynangeles.github.io/ngb-intelisearch/](https://rynangeles.github.io/ngb-intelisearch/)
 
 ## Dependencies
 
