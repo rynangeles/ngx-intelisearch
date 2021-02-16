@@ -1,27 +1,106 @@
-# InteliseachDemo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.1.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Ngb-inteliseach
 
-## Code scaffolding
+Angular library for inteligent search input with save recent search feature.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Demo
 
-## Build
+Check the demo site on how it works [https://rynangeles.github.io/ngb-intelisearch/](https://rynangeles.github.io/ngb-intelisearch/)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Dependencies
 
-## Running unit tests
+This library has four dependencies. [ng-bootstrap](https://github.com/ng-bootstrap/ng-bootstrap), [bootstrap 4](https://getbootstrap.com/), [lodash](https://lodash.com/) and [lineawesome](https://icons8.com/line-awesome)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Installation
 
-## Running end-to-end tests
+This library is published in Github Packages. 
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+> npm install @rynangeles/ngb-intelisearch
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+###  Import the module
+    import { NgbIntelisearchModule } from  'ngb-intelisearch';
+
+	@NgModule({
+		imports: [
+			NgbIntelisearchModule
+		]
+	})
+	export  class  AppModule { }
+
+## Usage
+
+> app.component.html
+
+	<ngb-intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></ngb-intelisearch>
+> app.component.ts
+
+	
+
+    import { Component } from '@angular/core';
+    import { Observable, of } from 'rxjs';
+    
+    @Component({
+      selector: 'app-root',
+      templateUrl: './app.component.html',
+      styleUrls: ['./app.component.scss']
+    })
+    export class AppComponent {
+      constructor() {
+        this.getKeys = this.getKeys.bind(this);
+        this.getValues = this.getValues.bind(this);
+      }
+    
+      query: any;
+    
+      data: any = {
+        gender: [
+          { value: 'M' },
+          { value: 'F' }
+        ],
+        name: [
+          { value: `Inaaya Ramsay` },
+          { value: `Connar Parra` },
+          { value: `Mike Shah` },
+          { value: `Ariyan Winter` },
+          { value: `Meredith Ward` },
+        ],
+        username: [
+          { value: 'kentish' },
+          { value: 'turban' },
+          { value: 'favorable' },
+          { value: 'breathe' },
+          { value: 'rufous' }
+        ]
+      }
+    
+      getKeys(evt): Observable<any[]> {
+        return evt.type === 'KEY' ? of(Object.keys(this.data).map(value => ({ value }))) : of([]);
+      }
+    
+      getValues(evt): Observable<any[]> {
+        return evt.type === 'VALUE' ? of(this.data[evt.property]) : of([]);
+      }
+    
+      search(evt) {
+        this.query = evt;
+      }
+    }
+
+## API
+### Inputs 
+|  |  |  |
+|--|--|--|
+| **name** | required | Name of the instance. *type: String* |
+| **keys** | required | List of properties of the collection to search. *type: Observable<{value:any, label:string}[]* |
+| **values** | required | List of values based on the selected property of the collection. *type: Observable<{value:any, label:string}[]* |
+| **logical** | optional | List of logical operators. *type: Observable<{value:any, label:string}[]>* |
+| **comparison** | optional | List of comparison operators. *type: Observable<{value:any, label:string}[]* |
+
+### Outputs 
+| | | |
+|--|--|--|
+| search | required | Function to seach the collection. |
+
