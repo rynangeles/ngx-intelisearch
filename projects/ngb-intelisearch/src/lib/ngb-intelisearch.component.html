@@ -1,0 +1,45 @@
+<div class="search-filter-box">
+  <div class="search-filter-box-recent-searches" ngbDropdown container="body">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" ngbDropdownToggle
+      ngbTooltip="Recent Searches">
+      <i class="las la-history"></i>
+    </button>
+    <div class="dropdown-menu recent-searches p-0" ngbDropdownMenu>
+      <button (click)="onSelectRecentSearch(tokens)" class="dropdown-item px-2"
+        *ngFor="let tokens of searchTokens">{{tokensToString(tokens)}}</button>
+      <div role="separator" class="dropdown-divider m-0"></div>
+      <button class="dropdown-item px-2" (click)="clearSearchTokens()">Clear recent searches</button>
+    </div>
+  </div>
+  <div class="search-filter-box-container">
+    <ul class="tokens-container list-unstyled">
+      <ng-container *ngFor="let _token of tokens; let i = index;">
+        <li class="visual-token">
+          <div class="selectable" role="button" (click)="selectToken(i)">
+            <div *ngIf="_token[0]" class="logical">{{_token[0]}}</div>
+            <div *ngIf="_token[1]" class="key">{{_token[1]}}</div>
+            <div *ngIf="_token[2]" class="operator">{{_token[2]}}</div>
+            <div *ngIf="_token[3]" class="value">{{_token[3]}}</div>
+            <a *ngIf="_token[3]" class="remove" role="button" (click)="removeToken(i)">
+              <i class="las la-times"></i>
+            </a>
+          </div>
+        </li>
+        <li class="input-token" *ngIf="_token === token">
+          <input type="text" class="form-control" [placeholder]="getInputPlaceholder(token)" #input
+            #typehead="ngbTypeahead" [focusFirst]="false" (keydown)="onTypeheadKeydown($event)"
+            (focus)="focus$.next($any($event).target.value)" (click)="click$.next($any($event).target.value)"
+            [(ngModel)]="inputModel" [ngbTypeahead]="tokenSearch()" [inputFormatter]="inputFormatter"
+            [resultTemplate]="resultTemplate" container="body" (selectItem)="tokenHandler($event)">
+        </li>
+      </ng-container>
+    </ul>
+    <a class="clear" role="button" (click)="clearTokens()" *ngIf="tokens.length > 1">
+      <i class="las la-times"></i>
+    </a>
+  </div>
+</div>
+<ng-template #resultTemplate let-result="result" let-term="term">
+  <ngb-highlight [result]="result.value" [term]="term"></ngb-highlight>
+  <span class="text-muted">{{ result.label }}</span>
+</ng-template>
