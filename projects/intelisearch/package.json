@@ -1,0 +1,21 @@
+{
+  "name": "intelisearch",
+  "version": "0.0.1",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/rynangeles"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:rynangeles/ngx-intelisearch.git",
+    "directory": "@rynangeles/ngx-intelisearch"
+  },
+  "peerDependencies": {
+    "@angular/common": "^10.2.4",
+    "@angular/core": "^10.2.4",
+    "@popperjs/core": "^2.7.0",
+    "@tarekraafat/autocomplete.js": "^8.3.2"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

@@ -19,6 +19,10 @@
       "ngb-intelisearch": [
         "dist/ngb-intelisearch/ngb-intelisearch",
         "dist/ngb-intelisearch"
+      ],
+      "intelisearch": [
+        "dist/intelisearch/intelisearch",
+        "dist/intelisearch"
       ]
     }
   }

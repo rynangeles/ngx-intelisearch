@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgbIntelisearchModule } from 'ngb-intelisearch';
+import { IntelisearchModule } from 'intelisearch';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,8 @@ import { NgbIntelisearchModule } from 'ngb-intelisearch';
   ],
   imports: [
     BrowserModule,
-    NgbIntelisearchModule
+    IntelisearchModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

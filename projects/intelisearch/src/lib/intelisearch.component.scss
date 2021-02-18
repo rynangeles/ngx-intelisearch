@@ -1,0 +1,169 @@
+@import '../../assets/variable';
+
+.intelisearch {
+  font-size: 14px;
+  display: flex;
+  border: 1px solid lighten($color: $color, $amount: 65);
+  border-radius: $radius;
+
+  .recent-searches {
+    &>button {
+      height: 100%;
+      font-size: 0;
+      padding: 0 10px;
+      border-radius: $radius;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border: 1px solid lighten($color: $color, $amount: 75);
+      background-color: lighten($color: $color, $amount: 75);
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: lighten($color: $color, $amount: 40);
+      }
+    }
+
+    .dropdown-content {
+      max-width: 250px;
+
+      button {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+
+    .clear-recent-searches {
+      border-top: 1px solid lighten($color: $color, $amount: 75);
+      color: lighten($color: $color, $amount: 45);
+    }
+  }
+
+  .search-box {
+    flex: 1;
+    display: flex;
+    overflow: auto;
+
+    .tokens {
+      margin: 0;
+      padding: 0;
+      padding-left: 5px;
+      list-style: none;
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .token {
+        .selectable {
+          display: flex;
+          margin-right: 2px;
+
+          &:hover {
+
+            div,
+            .remove {
+              background-color: lighten($color: $color, $amount: 70);
+            }
+          }
+
+          div {
+            background-color: lighten($color: $color, $amount: 75);
+            padding: 2px 6px;
+            margin-left: 2px;
+            color: lighten($color: $color, $amount: 30);
+            white-space: nowrap;
+
+            &.value {
+              color: $color;
+            }
+
+            &:first-child {
+              margin: 0;
+            }
+          }
+
+          .remove {
+            color: lighten($color: $color, $amount: 20);
+            background-color: lighten($color: $color, $amount: 75);
+            text-decoration: none;
+            padding: 5px 6px;
+            padding-left: 0;
+            font-size: 10px;
+            align-self: center;
+
+            &:hover {
+              color: $color;
+            }
+          }
+        }
+      }
+
+      .token-input {
+        flex: 1;
+
+        input {
+          width: 100%;
+          min-height: 34px;
+          padding: 5px;
+          border: 0;
+          background-color: transparent;
+
+          &:focus {
+            border: 0;
+            outline: 0;
+          }
+        }
+      }
+    }
+
+    .clear {
+      color: $color;
+      text-decoration: none;
+      padding: 5px 10px;
+      height: 100%;
+      text-align: center;
+    }
+  }
+}
+
+[dropdown] {
+  .dropdown-content {
+    display: none;
+  }
+
+  &.show {
+    .dropdown-content {
+      display: block;
+    }
+  }
+}
+
+::ng-deep .dropdown-content {
+  background-color: #FFFFFF;
+  border: 1px solid lighten($color: $color, $amount: 65);
+  min-width: 150px;
+  border-radius: $radius;
+  max-width: 250px;
+
+  button {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-width: 0;
+    background-color: transparent;
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 5px 8px;
+
+    &:hover {
+      background-color: lighten($color: $color, $amount: 75);
+    }
+  }
+
+  .clear-recent-searches {
+    border-top: 1px solid lighten($color: $color, $amount: 75);
+    color: lighten($color: $color, $amount: 45);
+  }
+}

@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["lodash"],
             "outputPath": "dist/inteliseach-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -160,6 +161,46 @@
             "tsConfig": [
               "projects/ngb-intelisearch/tsconfig.lib.json",
               "projects/ngb-intelisearch/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "intelisearch": {
+      "projectType": "library",
+      "root": "projects/intelisearch",
+      "sourceRoot": "projects/intelisearch/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/intelisearch/tsconfig.lib.json",
+            "project": "projects/intelisearch/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/intelisearch/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/intelisearch/src/test.ts",
+            "tsConfig": "projects/intelisearch/tsconfig.spec.json",
+            "karmaConfig": "projects/intelisearch/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/intelisearch/tsconfig.lib.json",
+              "projects/intelisearch/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

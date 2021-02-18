@@ -1,31 +1,31 @@
 
 
 
-# Ngb-inteliseach
+# Ngx-inteliseach
 
 Angular library for inteligent search input with save recent search feature.
 
 ## Demo
 
-Check the demo site on how it works [https://rynangeles.github.io/ngb-intelisearch/](https://rynangeles.github.io/ngb-intelisearch/)
+Check the demo site on how it works [https://rynangeles.github.io/ngx-intelisearch/](https://rynangeles.github.io/ngx-intelisearch/)
 
 ## Dependencies
 
-This library has four dependencies. [ng-bootstrap](https://github.com/ng-bootstrap/ng-bootstrap), [bootstrap 4](https://getbootstrap.com/), [lodash](https://lodash.com/) and [lineawesome](https://icons8.com/line-awesome)
+This library has three dependencies. [autoComplete.js](https://github.com/TarekRaafat/autoComplete.js), [lodash](https://lodash.com/) and [popper.js](https://popper.js.org/)
 
 ## Installation
 
 This library is published in Github Packages. 
 
-> npm install @rynangeles/ngb-intelisearch
+> npm install @rynangeles/ngx-intelisearch
 
 
 ###  Import the module
-    import { NgbIntelisearchModule } from  'ngb-intelisearch';
+    import { IntelisearchModule } from  'intelisearch';
 
 	@NgModule({
 		imports: [
-			NgbIntelisearchModule
+			IntelisearchModule
 		]
 	})
 	export  class  AppModule { }
@@ -34,7 +34,7 @@ This library is published in Github Packages.
 
 > app.component.html
 
-	<ngb-intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></ngb-intelisearch>
+	<intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></intelisearch>
 > app.component.ts
 
 	

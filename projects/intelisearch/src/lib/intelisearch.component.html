@@ -1,0 +1,33 @@
+<div class="intelisearch">
+  <div class="recent-searches" dropdown container="body">
+    <button class="dropdown-knob">
+      <svg viewBox="0 0 551.13 551.13">
+        <path d="M275.531 172.228l-.05 120.493c0 4.575 1.816 8.948 5.046 12.177l86.198 86.181 24.354-24.354-81.153-81.136.05-113.361z" />
+        <path d="M310.011 34.445c-121.23 0-221.563 90.033-238.367 206.674H0l86.114 86.114 86.114-86.114h-65.78C122.925 143.53 207.803 68.891 310.011 68.891c113.966 0 206.674 92.707 206.674 206.674s-92.707 206.674-206.674 206.674c-64.064 0-123.469-28.996-162.978-79.555l-27.146 21.192c46.084 58.968 115.379 92.808 190.124 92.808 132.955 0 241.119-108.181 241.119-241.119S442.966 34.446 310.011 34.445z" />
+      </svg>
+    </button>
+    <div class="dropdown-content">
+      <button (click)="onSelectRecentSearch(tokens)" *ngFor="let tokens of searchTokens">{{tokensToString(tokens)}}</button>
+      <button class="clear-recent-searches" (click)="clearSearchTokens()">Clear recent searches</button>
+    </div>
+  </div>
+  <div class="search-box">
+    <ul class="tokens">
+      <ng-container *ngFor="let _token of tokens; let i = index;">
+      <li class="token">
+        <div class="selectable" role="button" (click)="selectToken(i)">
+          <div *ngIf="_token[0]" class="logical">{{_token[0]}}</div>
+          <div *ngIf="_token[1]" class="key">{{_token[1]}}</div>
+          <div *ngIf="_token[2]" class="operator">{{_token[2]}}</div>
+          <div *ngIf="_token[3]" class="value">{{_token[3]}}</div>
+          <a *ngIf="_token[3]" class="remove" role="button" (click)="removeToken(i)">&#10005;</a>
+        </div>
+      </li>
+      <li class="token-input" *ngIf="_token === token">
+        <input type="text" [(ngModel)]="typeaheadInputModel" (keydown)="onTypeheadKeydown($event)" #typeahead="typeahead" [typeahead]="tokenSearch()" (selectItem)="tokenHandler($event)" container="body" debounce="300" placeholder="Search..." autocomplete="off" />
+      </li>
+    </ng-container>
+    </ul>
+    <a class="clear" role="button" (click)="clearTokens()" *ngIf="tokens.length > 1">&#10005;</a>
+  </div>
+</div>
