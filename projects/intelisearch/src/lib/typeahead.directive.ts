@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2 } from "@angular/core";
 import * as Autocomplete from '@tarekraafat/autocomplete.js';
 import { createPopper } from '@popperjs/core';
 import { Observable } from "rxjs";
@@ -7,33 +7,49 @@ import { Observable } from "rxjs";
   selector: 'input[typeahead]',
   exportAs: 'typeahead'
 })
-export class TypeaheadDirective {
+export class TypeaheadDirective implements OnInit {
+  @Input('key') private key: string;
+  @Input('label') private label: string;
+  @Input('container') private container: string;
   @Input('typeahead') private source: (text: string) => Observable<any>;
   @Output('selectItem') private onSelection: EventEmitter<any> = new EventEmitter();
-  instance: Autocomplete;
+  private ele: HTMLElement;
+  private instance: Autocomplete;
+  get selector() {
+    return this.instance.selector();
+  }
+  get value() {
+    return this.selector.value;
+  }
+  set value(value) {
+    this.selector.value = value;
+  }
   constructor(eleRef: ElementRef) {
-    const { nativeElement: ele } = eleRef;
+    this.ele = eleRef.nativeElement;
+  }
+  ngOnInit() {
     this.instance = new Autocomplete({
-      selector: () => ele,
+      selector: () => this.ele,
       highlight: true,
       data: {
-        src: async () => await this.source(this.instance.selector().value).toPromise(),
-        key: ['value'], // @input
+        src: async () => await this.source(this.value).toPromise(),
+        key: [this.key || 'value'],
       },
       resultsList: {
-        destination: ele.getAttribute('container'),
+        destination: this.container,
         className: 'typeahead-list',
         idName: `typeahead-list-${new Date().getUTCMilliseconds()}`,
         container: (element) => {
-          const input = this.instance.selector();
+          const input = this.selector;
           createPopper(input, element, { placement: 'bottom-start' });
         }
       },
       resultItem: {
         content: (data, element) => {
           const { value, match } = data;
-          const alias = 'label'; // @input
-          element.innerHTML = `<div>${match}</div>${alias && value[alias] ? `<div>${value[alias]}</div>` : ''}`;
+          const label = this.label || 'label';
+          console.log(label);
+          element.innerHTML = `<div>${match}</div>${label && value[label] ? `<div>${value[label]}</div>` : ''}`;
         },
         className: 'typeahead-item',
         idName: 'typeahead-item'
@@ -43,8 +59,7 @@ export class TypeaheadDirective {
         event: ['input', 'focus'],
         condition: () => true
       },
-      debounce: ele.getAttribute('debounce') || 0
+      debounce: this.ele.getAttribute('debounce') || 0
     });
   }
-
 }

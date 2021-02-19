@@ -1,31 +1,32 @@
 
 
 
-# Ngx-inteliseach
+# Ngb-inteliseach
 
 Angular library for inteligent search input with save recent search feature.
 
 ## Demo
 
-Check the demo site on how it works [https://rynangeles.github.io/ngx-intelisearch/](https://rynangeles.github.io/ngx-intelisearch/)
+Check the demo site on how it works [https://rynangeles.github.io/ngb-intelisearch/]([https://rynangeles.github.io/ngb-intelisearch/])
 
 ## Dependencies
 
-This library has three dependencies. [autoComplete.js](https://github.com/TarekRaafat/autoComplete.js), [lodash](https://lodash.com/) and [popper.js](https://popper.js.org/)
+This library has four dependencies. [ng-bootstrap](https://github.com/ng-bootstrap/ng-bootstrap), [bootstrap 4](https://getbootstrap.com/), [lodash](https://lodash.com/) and [lineawesome](https://icons8.com/line-awesome)
 
 ## Installation
 
 This library is published in Github Packages. 
 
-> npm install @rynangeles/ngx-intelisearch
+> npm install @rynangeles/ngb-intelisearch
 
+This will also install peer dependencies automatically.
 
 ###  Import the module
-    import { IntelisearchModule } from  'intelisearch';
+    import { NgbIntelisearchModule } from  'ngb-intelisearch';
 
 	@NgModule({
 		imports: [
-			IntelisearchModule
+			NgbIntelisearchModule
 		]
 	})
 	export  class  AppModule { }
@@ -34,7 +35,7 @@ This library is published in Github Packages.
 
 > app.component.html
 
-	<intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></intelisearch>
+	<ngb-intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></ngb-intelisearch>
 > app.component.ts
 
 	
@@ -91,13 +92,15 @@ This library is published in Github Packages.
 
 ## API
 ### Inputs 
-|  |  |  |
+| | | |
 |--|--|--|
 | **name** | required | Name of the instance. *type: String* |
 | **keys** | required | List of properties of the collection to search. *type: Observable<{value:any, label:string}[]* |
 | **values** | required | List of values based on the selected property of the collection. *type: Observable<{value:any, label:string}[]* |
 | **logical** | optional | List of logical operators. *type: Observable<{value:any, label:string}[]>* |
 | **comparison** | optional | List of comparison operators. *type: Observable<{value:any, label:string}[]* |
+| **key** | optional | Property name to set as value. *type: String* |
+| **label** | optional | Property name to set as label. *type: String* |
 
 ### Outputs 
 | | | |

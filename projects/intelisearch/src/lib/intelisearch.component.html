@@ -24,7 +24,7 @@
         </div>
       </li>
       <li class="token-input" *ngIf="_token === token">
-        <input type="text" [(ngModel)]="typeaheadInputModel" (keydown)="onTypeheadKeydown($event)" #typeahead="typeahead" [typeahead]="tokenSearch()" (selectItem)="tokenHandler($event)" container="body" debounce="300" placeholder="Search..." autocomplete="off" />
+        <input type="text" (keydown)="onTypeheadKeydown($event)" #typeahead="typeahead" [typeahead]="tokenSearch()" (selectItem)="tokenHandler($event)" container="body" debounce="300" [key]="key" [label]="label" placeholder="Search..." autocomplete="off" />
       </li>
     </ng-container>
     </ul>

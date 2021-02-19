@@ -1,6 +1,15 @@
 @import '../../assets/variable';
 
+::ng-deep{
+  button, ul{
+    &:focus{
+      outline: none;
+    }
+  }
+}
+
 .intelisearch {
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   display: flex;
   border: 1px solid lighten($color: $color, $amount: 65);
@@ -8,6 +17,7 @@
 
   .recent-searches {
     &>button {
+      box-sizing: border-box;
       height: 100%;
       font-size: 0;
       padding: 0 10px;
@@ -16,7 +26,7 @@
       border-bottom-right-radius: 0;
       border: 1px solid lighten($color: $color, $amount: 75);
       background-color: lighten($color: $color, $amount: 75);
-
+      cursor: pointer;
       svg {
         width: 20px;
         height: 20px;
@@ -58,7 +68,8 @@
         .selectable {
           display: flex;
           margin-right: 2px;
-
+          align-items: center;
+          cursor: pointer;
           &:hover {
 
             div,
@@ -69,7 +80,7 @@
 
           div {
             background-color: lighten($color: $color, $amount: 75);
-            padding: 2px 6px;
+            padding: 4px 6px;
             margin-left: 2px;
             color: lighten($color: $color, $amount: 30);
             white-space: nowrap;
@@ -103,6 +114,7 @@
         flex: 1;
 
         input {
+          box-sizing: border-box;
           width: 100%;
           min-height: 34px;
           padding: 5px;
@@ -118,11 +130,13 @@
     }
 
     .clear {
+      cursor: pointer;
       color: $color;
       text-decoration: none;
       padding: 5px 10px;
       height: 100%;
       text-align: center;
+      box-sizing: border-box;
     }
   }
 }
@@ -140,6 +154,7 @@
 }
 
 ::ng-deep .dropdown-content {
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #FFFFFF;
   border: 1px solid lighten($color: $color, $amount: 65);
   min-width: 150px;
@@ -156,7 +171,7 @@
     width: 100%;
     text-align: left;
     padding: 5px 8px;
-
+    cursor: pointer;
     &:hover {
       background-color: lighten($color: $color, $amount: 75);
     }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
 import * as _ from 'lodash';
 
@@ -23,9 +23,11 @@ const EnumLength = Enum => {
   templateUrl: './intelisearch.component.html',
   styleUrls: ['./intelisearch.component.scss']
 })
-export class IntelisearchComponent implements OnInit, AfterViewInit {
+export class IntelisearchComponent implements OnInit {
   @ViewChild('typeahead') typeahead: TypeaheadDirective;
   @Input() name: string;
+  @Input() key: string;
+  @Input() label: string;
   @Input() keys: (value: any) => Observable<any>;
   @Input() values: (value: any) => Observable<any>;
   @Input() logical: (value: any) => Observable<any> = () => of([
@@ -45,7 +47,6 @@ export class IntelisearchComponent implements OnInit, AfterViewInit {
   searchTokens: any[];
   tokens: any[] = [];
   token: string[];
-  typeaheadInputModel: string = '';
 
   constructor() {
     this.tokenSearch = this.tokenSearch.bind(this);
@@ -64,29 +65,26 @@ export class IntelisearchComponent implements OnInit, AfterViewInit {
     this.getSearchTokens();
 
   }
-  ngAfterViewInit() {
-
-  }
 
   saveSearchTokens() {
     const tokens = this.getSearchTokens();
     tokens.push(_.filter(this.tokens, token => token.length));
-    window.localStorage.setItem(`sf:${this.name}`, JSON.stringify(_.takeRight(tokens, 5)));
+    window.localStorage.setItem(`intelisearch:${this.name}`, JSON.stringify(_.takeRight(tokens, 5)));
   }
 
   getSearchTokens() {
-    const tokens = window.localStorage.getItem(`sf:${this.name}`);
+    const tokens = window.localStorage.getItem(`intelisearch:${this.name}`);
     this.searchTokens = JSON.parse(tokens) || [];
     return this.searchTokens;
   }
 
   clearSearchTokens() {
-    window.localStorage.removeItem(`sf:${this.name}`);
+    window.localStorage.removeItem(`intelisearch:${this.name}`);
     this.getSearchTokens();
   }
 
   tokensToString(tokens) {
-    return _.map(tokens, i => i.join('')).join('&');
+    return _.map(tokens, i => i.join('')).join('');
   }
 
   onSelectRecentSearch(tokens) {
@@ -95,17 +93,13 @@ export class IntelisearchComponent implements OnInit, AfterViewInit {
     this.search.emit(this.tokens);
   }
 
-  /*
-  TODO:
-  inspect how tokens and queries produced
-  */
   onTypeheadKeydown(evt?) {
     const keyCode = (evt.which) ? evt.which : evt.keyCode;
     switch (keyCode) {
       case KeyCode.Enter:
-        if (this.typeaheadInputModel.length > 0) {
+        if (this.typeahead.value.length > 0) {
           evt.preventDefault();
-          this.search.emit([...this.tokens, [this.typeaheadInputModel]]);
+          this.search.emit([...this.tokens, [this.typeahead.value]]);
         }
         if (this.tokens.length > 1 && this.token.length === 0) {
           evt.preventDefault();
@@ -114,19 +108,18 @@ export class IntelisearchComponent implements OnInit, AfterViewInit {
         }
         break;
       case KeyCode.Backspace:
-        if (!this.typeaheadInputModel.length) {
+        if(this.token.length === 1 && this.token[0] == null) return;
+        if (!this.typeahead.value.length) {
           evt.preventDefault();
-          this.typeahead.instance.selector().blur();
-          if (!this.token.length && this.tokens.indexOf(this.token) !== 0) {
+          this.typeahead.selector.blur();
+          if(this.tokens.indexOf(this.token) > 0 && this.token.length === 0){
             this.tokens.pop();
             this.token = _.last(this.tokens);
           }
-          this.typeaheadInputModel = this.token.pop() || '';
-          if (this.tokens.length === 1 && this.token.length === 0) {
-            this.tokens.pop();
-            this.addToken();
-          }
-          setTimeout(() => this.typeahead.instance.selector().focus(), 0);
+          setTimeout(() => {
+            this.typeahead.selector.focus();
+            this.typeahead.value = this.token.pop() || '';
+          }, 0);
         }
         break;
       default:
@@ -157,22 +150,22 @@ export class IntelisearchComponent implements OnInit, AfterViewInit {
     }
   }
   tokenHandler({ selection }) {
-    this.typeahead.instance.selector().blur();
+    this.typeahead.selector.blur();
     const value = selection.value[selection.key];
     this.token.push(value);
-    this.typeaheadInputModel = '';
+    this.typeahead.value = '';
     if (this.token.indexOf(value) === Token.Value) this.addToken();
-    setTimeout(() => this.typeahead.instance.selector().focus(), 0);
+    setTimeout(() => this.typeahead.selector.focus(), 0);
   }
 
   selectToken(idx) {
     const token = this.tokens[idx];
     if (token.length === EnumLength(Token)) {
-      this.typeahead.instance.selector().blur();
+      this.typeahead.selector.blur();
       this.tokens.pop();
       this.token = token;
-      this.typeaheadInputModel = this.token.pop();
-      setTimeout(() => this.typeahead.instance.selector(), 0);
+      this.typeahead.value = this.token.pop();
+      setTimeout(() => this.typeahead.selector, 0);
     }
   }
 
