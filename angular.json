@@ -29,10 +29,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/line-awesome/dist/line-awesome/scss/line-awesome.scss",
-              {
-                "input": "./node_modules/bootstrap/dist/css/bootstrap.css"
-              },
               "src/styles.scss"
             ],
             "scripts": []
