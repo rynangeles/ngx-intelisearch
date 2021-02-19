@@ -38,6 +38,42 @@ This will also install peer dependencies automatically.
 	<ngb-intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></ngb-intelisearch>
 > app.component.ts
 
+# Ngx-inteliseach
+
+Angular library for inteligent search input with save recent search feature.
+
+## Demo
+
+Check the demo site on how it works [https://rynangeles.github.io/ngx-intelisearch/](https://rynangeles.github.io/ngx-intelisearch/)
+
+## Dependencies
+
+This library has three dependencies. [autoComplete.js](https://github.com/TarekRaafat/autoComplete.js), [lodash](https://lodash.com/) and [popper.js](https://popper.js.org/)
+
+## Installation
+
+This library is published in Github Packages. 
+
+> npm install @rynangeles/ngx-intelisearch
+
+
+###  Import the module
+    import { IntelisearchModule } from  'intelisearch';
+
+	@NgModule({
+		imports: [
+			IntelisearchModule
+		]
+	})
+	export  class  AppModule { }
+
+## Usage
+
+> app.component.html
+
+	<intelisearch  name="intelisearch"  (search)="search($event)"  [keys]="getKeys"  [values]="getValues"></intelisearch>
+> app.component.ts
+
 	
 
     import { Component } from '@angular/core';
@@ -92,7 +128,7 @@ This will also install peer dependencies automatically.
 
 ## API
 ### Inputs 
-| | | |
+|  |  |  |
 |--|--|--|
 | **name** | required | Name of the instance. *type: String* |
 | **keys** | required | List of properties of the collection to search. *type: Observable<{value:any, label:string}[]* |
@@ -106,4 +142,3 @@ This will also install peer dependencies automatically.
 | | | |
 |--|--|--|
 | search | required | Function to seach the collection. |
-
