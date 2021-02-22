@@ -103,7 +103,7 @@ export class IntelisearchComponent implements OnInit {
         }
         if (this.tokens.length > 1 && this.token.length === 0) {
           evt.preventDefault();
-          this.search.emit(this.tokens);
+          this.search.emit([...this.tokens]);
           this.saveSearchTokens();
         }
         break;
