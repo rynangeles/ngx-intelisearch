@@ -48,7 +48,6 @@ export class TypeaheadDirective implements OnInit {
         content: (data, element) => {
           const { value, match } = data;
           const label = this.label || 'label';
-          console.log(label);
           element.innerHTML = `<div>${match}</div>${label && value[label] ? `<div>${value[label]}</div>` : ''}`;
         },
         className: 'typeahead-item',

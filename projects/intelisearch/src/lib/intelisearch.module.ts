@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { DropdownDirective } from './dropdown.directive';
 import { TypeaheadDirective } from './typeahead.directive';
 import { IntelisearchComponent } from './intelisearch.component';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
   declarations: [IntelisearchComponent, TypeaheadDirective, DropdownDirective],
   imports: [
-    BrowserModule
+    CommonModule
   ],
-  exports: [IntelisearchComponent, TypeaheadDirective, DropdownDirective]
+  exports: [IntelisearchComponent, TypeaheadDirective]
 })
 export class IntelisearchModule { }

@@ -1,6 +1,6 @@
 {
   "name": "@rynangeles/ngx-intelisearch",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/rynangeles"
   },
@@ -11,11 +11,11 @@
   },
   "peerDependencies": {
     "@angular/common": "^10.2.4",
-    "@angular/core": "^10.2.4",
-    "@popperjs/core": "^2.7.0",
-    "@tarekraafat/autocomplete.js": "^8.3.2"
+    "@angular/core": "^10.2.4"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "@popperjs/core": "^2.7.0",
+    "@tarekraafat/autocomplete.js": "^8.3.2"
   }
 }

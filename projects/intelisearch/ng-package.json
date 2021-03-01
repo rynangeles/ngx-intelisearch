@@ -9,5 +9,10 @@
       "@tarekraafat/autocomplete.js": "@tarekraafat/autocomplete.js"
     }
   },
-  "assets": ["assets"]
+  "assets": ["assets"],
+  "whitelistedNonPeerDependencies": [
+    "@popperjs/core",
+    "@tarekraafat/autocomplete.js",
+    "tslib"
+  ]
 }
