@@ -52,10 +52,16 @@ export class IntelisearchComponent implements OnInit {
     this.tokenSearch = this.tokenSearch.bind(this);
   }
 
-  inputFormatter = (input: { value: string }) => input.value;
+  private get _isTokensEmpty() {
+    return this.tokens.length <= 1 && _.some(this.tokens, token => _.isEmpty(token));
+  }
+
+  private get _tokenEntryIndex() {
+    return this._isTokensEmpty ? 1 : this.token.length;
+  }
 
   addToken() {
-    const token = this.tokens.length ? [] : [null];
+    const token = [];
     this.tokens.push(token);
     this.token = this.tokens[this.tokens.indexOf(token)];
   }
@@ -63,6 +69,7 @@ export class IntelisearchComponent implements OnInit {
   ngOnInit() {
     this.addToken();
     this.getSearchTokens();
+    console.log(this._isTokensEmpty);
 
   }
 
@@ -97,39 +104,49 @@ export class IntelisearchComponent implements OnInit {
     const keyCode = (evt.which) ? evt.which : evt.keyCode;
     switch (keyCode) {
       case KeyCode.Enter:
-        if (this.typeahead.value.length > 0) {
-          evt.preventDefault();
-          this.search.emit([...this.tokens, [this.typeahead.value]]);
-        }
-        if (this.tokens.length > 1 && this.token.length === 0) {
-          evt.preventDefault();
-          this.search.emit([...this.tokens]);
-          this.saveSearchTokens();
+        if (this._isTokensEmpty) {
+          this.typeahead.value && this.search.emit(this.typeahead.value);
+        } else {
+          switch (this._tokenEntryIndex) {
+            case Token.Logical:
+              setTimeout(() => {
+                if (!this.typeahead.value && _.isEmpty(this.token)) {
+                  this.search.emit(_.chain(this.tokens).filter(token => !_.isEmpty(token)).cloneDeep().value());
+                  this.saveSearchTokens();
+                }
+              });
+              break;
+            case Token.Value:
+              setTimeout(() => this.typeahead.value && this.tokenHandler(this.typeahead.value));
+              break;
+            default:
+              break;
+          }
         }
         break;
       case KeyCode.Backspace:
-        if(this.token.length === 1 && this.token[0] == null) return;
-        if (!this.typeahead.value.length) {
+        if (!this.typeahead.value) {
           evt.preventDefault();
           this.typeahead.selector.blur();
-          if(this.tokens.indexOf(this.token) > 0 && this.token.length === 0){
+          if (this.tokens.indexOf(this.token) > 0 && this.token.length === 0) {
             this.tokens.pop();
             this.token = _.last(this.tokens);
           }
           setTimeout(() => {
             this.typeahead.selector.focus();
             this.typeahead.value = this.token.pop() || '';
-          }, 0);
+          });
         }
         break;
       default:
         break;
     }
   }
+
   tokenSearch() {
     return (term: string) => {
       let $observable: Observable<any>;
-      switch (this.token.length) {
+      switch (this._tokenEntryIndex) {
         case Token.Logical:
           $observable = this.logical({ type: 'LOGICAL', property: null, term, count: 10 });
           break;
@@ -149,10 +166,16 @@ export class IntelisearchComponent implements OnInit {
       return $observable;
     }
   }
-  tokenHandler({ selection }) {
+
+  onTypeheadSelectItem({ event, selection }) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    this.tokenHandler(selection.value[selection.key]);
+  }
+
+  tokenHandler(value) {
     this.typeahead.selector.blur();
-    const value = selection.value[selection.key];
-    this.token.push(value);
+    this.token.push.apply(this.token, this._isTokensEmpty ? [null, value] : [value]);
     this.typeahead.value = '';
     if (this.token.indexOf(value) === Token.Value) this.addToken();
     setTimeout(() => this.typeahead.selector.focus(), 0);
@@ -164,8 +187,10 @@ export class IntelisearchComponent implements OnInit {
       this.typeahead.selector.blur();
       this.tokens.pop();
       this.token = token;
-      this.typeahead.value = this.token.pop();
-      setTimeout(() => this.typeahead.selector, 0);
+      setTimeout(() => {
+        this.typeahead.value = this.token.pop(); 
+        this.typeahead.selector.focus();
+      });
     }
   }
 
