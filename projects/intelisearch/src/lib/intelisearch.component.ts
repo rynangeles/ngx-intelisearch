@@ -69,7 +69,6 @@ export class IntelisearchComponent implements OnInit {
   ngOnInit() {
     this.addToken();
     this.getSearchTokens();
-    console.log(this._isTokensEmpty);
 
   }
 
