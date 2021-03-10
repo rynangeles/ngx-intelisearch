@@ -14,7 +14,7 @@ export class TypeaheadDirective implements OnInit {
   @Input('typeahead') private source: (text: string) => Observable<any>;
   @Output('selectItem') private onSelection: EventEmitter<any> = new EventEmitter();
   private ele: HTMLElement;
-  private instance: Autocomplete;
+  instance: Autocomplete;
   get selector() {
     return this.instance.selector();
   }

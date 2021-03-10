@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
+import { take } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 import { TypeaheadDirective } from './typeahead.directive';
@@ -25,6 +26,7 @@ const EnumLength = Enum => {
 })
 export class IntelisearchComponent implements OnInit {
   @ViewChild('typeahead') typeahead: TypeaheadDirective;
+  @Input() maxResults: number;
   @Input() name: string;
   @Input() key: string;
   @Input() label: string;
@@ -47,6 +49,7 @@ export class IntelisearchComponent implements OnInit {
   searchTokens: any[];
   tokens: any[] = [];
   token: string[];
+  pristine: boolean = true;
 
   constructor() {
     this.tokenSearch = this.tokenSearch.bind(this);
@@ -99,19 +102,25 @@ export class IntelisearchComponent implements OnInit {
     this.search.emit(this.tokens);
   }
 
+  get cleanTokens() {
+    return _.chain(this.tokens).filter(token => !_.isEmpty(token)).cloneDeep().value();
+  }
+
   onTypeheadKeydown(evt?) {
     const keyCode = (evt.which) ? evt.which : evt.keyCode;
     switch (keyCode) {
       case KeyCode.Enter:
         if (this._isTokensEmpty) {
           this.typeahead.value && this.search.emit(this.typeahead.value);
+          this.pristine = false;
         } else {
           switch (this._tokenEntryIndex) {
             case Token.Logical:
               setTimeout(() => {
                 if (!this.typeahead.value && _.isEmpty(this.token)) {
-                  this.search.emit(_.chain(this.tokens).filter(token => !_.isEmpty(token)).cloneDeep().value());
+                  this.search.emit(this.cleanTokens);
                   this.saveSearchTokens();
+                  this.pristine = false;
                 }
               });
               break;
@@ -134,6 +143,9 @@ export class IntelisearchComponent implements OnInit {
           setTimeout(() => {
             this.typeahead.selector.focus();
             this.typeahead.value = this.token.pop() || '';
+            if (this._isTokensEmpty) {
+              this.pristine = true;
+            }
           });
         }
         break;
@@ -148,14 +160,18 @@ export class IntelisearchComponent implements OnInit {
       switch (this._tokenEntryIndex) {
         case Token.Logical:
           $observable = this.logical({ type: 'LOGICAL', property: null, term, count: 10 });
+          $observable.pipe(take(1)).subscribe(r => this.typeahead.instance.maxResults = r.length);
           break;
         case Token.Key:
           $observable = this.keys({ type: 'KEY', property: null, term, count: 10 });
+          $observable.pipe(take(1)).subscribe(r => this.typeahead.instance.maxResults = r.length);
           break;
         case Token.Operator:
           $observable = this.comparison({ type: 'COMPARISON', property: null, term, count: 10 });
+          $observable.pipe(take(1)).subscribe(r => this.typeahead.instance.maxResults = r.length);
           break;
         case Token.Value:
+          this.typeahead.instance.maxResults = this.maxResults || 5;
           $observable = this.values({ type: 'VALUE', property: this.token[Token.Key], term, count: 10 });
           break;
         default:
@@ -177,17 +193,19 @@ export class IntelisearchComponent implements OnInit {
     this.token.push.apply(this.token, this._isTokensEmpty ? [null, value] : [value]);
     this.typeahead.value = '';
     if (this.token.indexOf(value) === Token.Value) this.addToken();
+    this.pristine = false;
     setTimeout(() => this.typeahead.selector.focus(), 0);
   }
 
   selectToken(idx) {
+    if (this.token.length) return;
     const token = this.tokens[idx];
     if (token.length === EnumLength(Token)) {
       this.typeahead.selector.blur();
       this.tokens.pop();
       this.token = token;
       setTimeout(() => {
-        this.typeahead.value = this.token.pop(); 
+        this.typeahead.value = this.token.pop();
         this.typeahead.selector.focus();
       });
     }
@@ -200,7 +218,8 @@ export class IntelisearchComponent implements OnInit {
 
   clearTokens() {
     this.tokens.length = 0;
-    this.search.emit(this.tokens);
+    this.search.emit(this.cleanTokens);
     this.addToken();
+    this.pristine = true;
   }
 }

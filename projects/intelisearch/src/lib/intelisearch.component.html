@@ -28,6 +28,6 @@
       </li>
     </ng-container>
     </ul>
-    <a class="clear" role="button" (click)="clearTokens()" *ngIf="tokens.length > 1">&#10005;</a>
+    <a class="clear" role="button" (click)="clearTokens()" *ngIf="!pristine">&#10005;</a>
   </div>
 </div>
