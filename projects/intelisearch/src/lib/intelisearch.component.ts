@@ -30,6 +30,7 @@ export class IntelisearchComponent implements OnInit {
   @Input() name: string;
   @Input() key: string;
   @Input() label: string;
+  @Input() placeholder: string;
   @Input() keys: (value: any) => Observable<any>;
   @Input() values: (value: any) => Observable<any>;
   @Input() logical: (value: any) => Observable<any> = () => of([
